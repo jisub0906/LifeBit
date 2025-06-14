@@ -1,0 +1,64 @@
+# docker-compose.yml
+
+services:
+  # 1. PostgreSQL 데이터베이스 서비스
+  postgres:
+    image: postgres:15-alpine
+    container_name: my_monorepo_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  # 2. Spring Boot 백엔드 서비스
+  backend-java:
+    build:
+      context: ./packages/backend-java
+      dockerfile: Dockerfile
+    container_name: my_monorepo_backend_java
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    environment:
+      # 중요: localhost가 아닌 서비스 이름(postgres)으로 접속해야 함
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+    restart: unless-stopped
+
+  # 3. FastAPI 백엔드 서비스
+  backend-py:
+    build:
+      context: ./packages/backend-py
+      dockerfile: Dockerfile
+    container_name: my_monorepo_backend_py
+    depends_on:
+      - postgres
+    ports:
+      - "8000:8000"
+    environment:
+      # 중요: localhost가 아닌 서비스 이름(postgres)으로 접속해야 함
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    restart: unless-stopped
+
+  # 4. Vite 프론트엔드 서비스 (Nginx)
+  frontend:
+    build:
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+    container_name: my_monorepo_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend-java
+      - backend-py
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

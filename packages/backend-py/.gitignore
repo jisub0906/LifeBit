@@ -1,0 +1,31 @@
+# Node
+node_modules/
+packages/frontend/dist/
+packages/frontend/node_modules/
+npm-debug.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Java/Gradle
+.gradle/
+build/
+packages/backend-java/build/
+packages/backend-java/.gradle/
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# 환경 변수
+.env
+
+# IDE/OS
+.DS_Store
+.vscode/
+.idea/
+Thumbs.db
+
+# 기타
+*.log 

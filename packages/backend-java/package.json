@@ -1,0 +1,7 @@
+{
+    "name": "backend-py",
+    "version": "1.0.0",
+    "scripts": {
+      "dev": "echo backend-py dev"
+    }
+  }

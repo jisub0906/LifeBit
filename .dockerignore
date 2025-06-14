@@ -1,0 +1,26 @@
+# .dockerignore
+
+# Git
+.git
+
+# Node
+node_modules
+packages/frontend/dist
+packages/frontend/node_modules
+npm-debug.log
+
+# Java/Gradle
+.gradle
+build
+out
+packages/backend-java/build
+packages/backend-java/.gradle
+
+# Python
+__pycache__
+*.pyc
+.venv
+venv
+
+# 환경 변수
+.env

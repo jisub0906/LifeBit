@@ -1,0 +1,21 @@
+{
+  "name": "lifebit",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "docker:reset": "docker compose down -v && docker compose up -d",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:backend-py": "pnpm --filter backend-py dev",
+    "dev:backend-java": "node run-backend-java.js",
+    "dev:docker": "docker compose up -d --remove-orphans",
+    "dev": "concurrently \"pnpm dev:frontend\" \"pnpm dev:backend-py\" \"pnpm dev:backend-java\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.1",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
